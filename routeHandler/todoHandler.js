@@ -6,7 +6,9 @@ const router = express.Router();
 router.get("/", async (req, res) => {});
 
 // get a todo by id
-router.get("/:id", async (req, res) => {});
+router.get("/:id", async (req, res) => {
+    
+});
 
 // post  todo by id
 router.post("/", async (req, res) => {});
