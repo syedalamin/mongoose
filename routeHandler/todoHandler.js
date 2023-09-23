@@ -6,10 +6,42 @@ const todoSchema = require("../schemas/todoSchema");
 const Todo = new mongoose.model("Todo", todoSchema);
 
 // get all the todos
-router.get("/", async (req, res) => {});
+router.get("/", async (req, res) => {
+    try{
+     const result =   await Todo.find({status: 'inactive'}).select({
+        _id: 0,
+        _v: 0,
+        date: 0
+     }).limit(2)
+        res.status(200).json({
+            result : result,
+            message: 'There todo get active'
+        })
+    }
+    catch(err){
+        console.error(err)
+        res.status(500).json({
+            error: "there was a server side error"
+        })
+    }
+});
 
 // get a  todo by id
-router.get("/:id", async (req, res) => {});
+router.get("/:id", async (req, res) => {
+    try{
+        const result =   await Todo.find({_id: req.params.id})
+           res.status(200).json({
+               result : result,
+               message: 'There todo get active'
+           })
+       }
+       catch(err){
+           console.error(err)
+           res.status(500).json({
+               error: "there was a server side error"
+           })
+       }
+});
 
 // // post a  todo
 // router.post("/", async (req, res) => {
@@ -50,26 +82,47 @@ router.post("/all", async (req, res) => {
 // put  todo
 router.put("/:id", async (req, res) => {
   try {
-    await Todo.updateOne(
+   const result =  await Todo.findByIdAndUpdate(
       { _id: req.params.id },
       {
         $set: {
           status: "active",
         },
+      },
+      {
+        new: true,
+        useFindAndModify: false
       }
     );
     res.status(200).json({
       message: "Todo was and update",
     });
+    
+console.log(result)
   } catch (err) {
     console.error(err);
     res.status(500).json({
       error: "There was server side error",
     });
   }
+  
 });
 
 // delete  todo
-router.delete("/:id", async (req, res) => {});
+router.delete("/:id", async (req, res) => {
+    try{
+        const result =   await Todo.deleteOne({_id: req.params.id})
+           res.status(200).json({
+               result : result,
+               message: 'Todo Was deleted'
+           })
+       }
+       catch(err){
+           console.error(err)
+           res.status(500).json({
+               error: "there was a server side error"
+           })
+       }
+});
 
 module.exports = router;
