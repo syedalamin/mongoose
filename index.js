@@ -1,27 +1,21 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
+const mongoose = require("mongoose");
 const port = process.env.PORT || 5000;
-
-const todoHandler = require('./routeHandler/todoHandler')
+const todoHandler = require("./routeHandler/todoHandler");
 
 // middleware
 app.use(express.json());
 
 // database connection with mongoose
 mongoose
-  .connect("mongodb://localhost/todos", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect("mongodb://localhost/todos")
   .then(() => {
     console.log("connection successful");
   })
   .catch((err) => console.log(err));
-
 // application routers
-app.use('/todo', todoHandler)
-
+app.use("/todo", todoHandler);
 
 // default error handler
 function errorHandler(err, req, res, next) {
