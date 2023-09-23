@@ -38,6 +38,22 @@ router.get("/js", async (req, res) => {
    }
 });
 
+// get todos by language
+router.get("/language", async (req, res) => {
+   try{
+    const data = await Todo.find().byLanguage("w3");
+    res.status(200).json({
+      data,
+    })
+   }
+   catch(err){
+    console.error(err)
+    res.status(500).json({
+        error: "there was a server side error"
+    })
+   }
+});
+
 
 // get in active the todos
 router.get("/inactive", async (req, res) => {
