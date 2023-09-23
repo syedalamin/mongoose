@@ -17,34 +17,57 @@ router.get("/:id", async (req, res) => {});
 //     await newTodo.save();
 // });
 
-
-
-
 router.post("/", async (req, res) => {
-    try {
-        const newTodo = new Todo(req.body);
-        await newTodo.save();
-        res.status(200).json({
-            Message: "Todo was inserted successfully"
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({
-            error: "There was a server side error"
-        });
-    }
+  try {
+    const newTodo = new Todo(req.body);
+    await newTodo.save();
+    res.status(200).json({
+      Message: "Todo was inserted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
 });
 
-
-
-
-
-
 // get multiple todo
-router.post("/all", async (req, res) => {});
+router.post("/all", async (req, res) => {
+  try {
+    await Todo.insertMany(req.body);
+    res.status(200).json({
+      Message: "Todo was inserted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "There was a server side error",
+    });
+  }
+});
 
 // put  todo
-router.put("/:id", async (req, res) => {});
+router.put("/:id", async (req, res) => {
+  try {
+    await Todo.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          status: "active",
+        },
+      }
+    );
+    res.status(200).json({
+      message: "Todo was and update",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "There was server side error",
+    });
+  }
+});
 
 // delete  todo
 router.delete("/:id", async (req, res) => {});
