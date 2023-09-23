@@ -5,6 +5,58 @@ const router = express.Router();
 const todoSchema = require("../schemas/todoSchema");
 const Todo = new mongoose.model("Todo", todoSchema);
 
+// get active the todos
+router.get("/active", async (req, res) => {
+   try{
+      const todo = new Todo();
+      const data = await todo.findActive();
+      res.status(200).json({
+        data,
+      })
+   }
+   catch(err){
+    console.error(err)
+    res.status(500).json({
+        error: "there was a server side error"
+    })
+   }
+});
+
+// js 
+router.get("/js", async (req, res) => {
+   try{
+    const data = await Todo.findByJS();
+    res.status(200).json({
+      data,
+    })
+   }
+   catch(err){
+    console.error(err)
+    res.status(500).json({
+        error: "there was a server side error"
+    })
+   }
+});
+
+
+// get in active the todos
+router.get("/inactive", async (req, res) => {
+   try{
+      const todo = new Todo();
+      const data = await todo.findInActive();
+      res.status(200).json({
+        data,
+      })
+   }
+   catch(err){
+    console.error(err)
+    res.status(500).json({
+        error: "there was a server side error"
+    })
+   }
+});
+
+
 // get all the todos
 router.get("/", async (req, res) => {
     try{
